@@ -1,0 +1,266 @@
+@use "./base.scss";
+
+
+/* =========================================
+  ORTAK AYARLAR VE LOKAL DEĞİŞKENLER
+  (Sadece Discord callout'ları içinde geçerlidir)
+========================================= */
+.callout[data-callout^="discord-"] {
+  /* --- İzole Değişkenler --- */
+  --d-bg-darker: #1e1f22;
+  --d-bg-darkest: #111214;
+  --d-bg-msg: #313338;
+  --d-text: #dbdee1;
+  --d-text-muted: #949ba4;
+  --d-blurple: #5865f2;
+  --d-green: #1fab89;
+  --d-avatar-bot: url('https://avatars.githubusercontent.com/u/125701962');
+  --d-avatar-user: url('https://i.imgur.com/9HlPIUx.jpg');
+
+  --border: transparent;
+
+  /* --- Genel Stiller --- */
+  font-family: 'gg sans', 'Noto Sans', sans-serif;
+  margin-bottom: 0;
+  border-radius: 0;
+  color: var(--d-text);
+  
+  .callout-title .callout-icon { display: none; }
+}
+
+/* --- SİHİR BURADA: Sadece Light Mode Aktifken Değişkenleri Ez --- */
+html[saved-theme="light"] .callout[data-callout^="discord-"] {
+  --d-bg-darker: #ebedef;    /* Komut satırı arkaplanı */
+  --d-bg-darkest: #e3e5e8;   /* Parametre key arkaplanı */
+  --d-bg-msg: #ffffff;       /* Mesaj gövdesi arkaplanı */
+  --d-text: #313338;         /* Ana metin (koyu gri/siyah) */
+  --d-text-muted: #5c5e66;   /* Soluk metin */ 
+  
+  // TODO: --d-text-muted lightmode rengi değişmeli.
+  
+  /* Bot etiketi ve Senchabot yeşili light modda da aynı kalabilir veya tonunu açabilirsin */
+}
+
+
+/* =========================================
+PAGE - STRUCTRE -GENEL AYARLAR
+========================================= */
+
+
+
+/* =========================================
+  1. KOMUT SATIRI CALLOUT
+========================================= */
+.callout[data-callout="discord-cmd"] {
+  background-color: var(--d-bg-msg);
+  padding: 12px 16px;
+  // border-radius: 8px 8px 0 0;
+  // border-bottom: 1px solid var(--d-bg-darker);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap !important; /* MOBİL SİHRİ: Ekrana sığmazsa alt satıra taşı */
+
+  /* Bot Avatarı (Sol) */
+  &::before {
+    content: "";
+    display: block;
+    width: 1.5rem; height: 1.5rem;
+    flex-shrink: 0; /* Ekran küçülünce avatarın ezilmesini önler */
+    border-radius: 50%;
+    background-image: var(--d-avatar-bot);
+    background-size: cover;
+  }
+
+  /* Komut İsmi (/set-twitch streamer) */
+  .callout-title {
+    padding: 0; margin: 0;
+    display: flex;
+    align-items: center; /* Quartz'ın flex-start ayarını eziyoruz (Dikey ortalama) */
+    
+    .callout-title-inner p {
+      color: var(--d-text) !important; /* Quartz'ın mavisini yok ediyoruz */
+      font-weight: 550;
+      margin: 0;
+      line-height: 1; /* Ekstra boşlukları sıfırla */
+    }
+  }
+
+  /* Parametre Alanı */
+  .callout-content {
+    margin: 0; padding: 0;
+    display: flex;
+    align-items: center; /* Kutu ile metni aynı hizaya getir */
+    
+    /* Parametre Kutusu */
+    p {
+      margin: 0; 
+      display: flex;
+      align-items: stretch; /* Siyah kutu içindeki metinlerin yüksekliklerini eşitle */
+      background-color: var(--d-bg-darker);
+      border-radius: 4px; 
+      overflow: hidden;
+    }
+    strong {
+      background-color: var(--d-bg-darkest);
+      padding: 4px 8px; 
+      color: var(--d-text) !important;
+      // font-weight: 500; 
+      font-size: 0.9em;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+    }
+    code {
+      background-color: transparent;
+      padding: 4px 8px; 
+      color: var(--d-text-muted);
+      font-size: 0.9em;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+/* =========================================
+  2. BOT MESAJI CALLOUT (Hizalama Düzeltildi)
+========================================= */
+.callout[data-callout="discord-msg"] {
+  background-color: var(--d-bg-msg);
+  border-left: 4px solid var(--d-green);
+  // border-radius: 0 0 8px 8px;
+  padding: 12px 16px;
+
+  /* Etkileşim Geçmişi (Test User used...) */
+  .callout-title {
+    padding: 0 0 0 56px; 
+    margin: 0 0 4px 0;
+    // color: var(--d-text-muted);
+    font-size: 0.85em;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    /* SİHİRLİ VURUŞ: Quartz'ın mavisini iç etikette eziyoruz */
+    .callout-title-inner {
+      
+      /* "used" */
+      p {
+      color: var(--d-text-muted);
+      font-weight: 500;
+      margin: 0;
+      }
+
+      /* "Test User" yazısı */
+      strong {
+        // color: var(--d-green) !important; 
+        // font-weight: 600;
+        margin-right: 6px;
+      }
+
+      /* "/set-twitch streamer" komut kısmı */
+      code {
+        background:none;
+        color: var(--d-blurple);
+        padding: 2px 4px;
+        border-radius: 3px;
+        font-size: 0.95em;
+        display: inline; /* Güvenlik için inline zorluyoruz */
+      }
+    } 
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background-image: var(--d-avatar-user);
+      background-size: cover;
+      margin-right: 6px;
+      position: relative;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 20px; 
+      top: 14px;
+      width: 28px;
+      height: 16px;
+      border-left: 2px solid #4e5058;
+      border-top: 2px solid #4e5058;
+      border-top-left-radius: 6px;
+    }
+  }
+
+  /* Ana Mesaj Gövdesi */
+  .callout-content {
+    padding-left: 56px;
+    position: relative;
+    margin: 0;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0; top: 0;
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background-image: var(--d-avatar-bot);
+      background-size: cover;
+    }
+
+    /* O HATALI FLEX'İ İPTAL ETTİĞİMİZ YER */
+    p { 
+      margin: 0 0 4px 0; 
+      display: block; 
+    }
+
+    /* Bot İsmi (Senchabot) ve BOT Etiketi */
+    strong {
+      color: var(--d-green); // Gerekli olursa !important eklenmeli
+      font-weight: 600;
+      margin-right: 6px;
+      
+      &::after {
+        content: "BOT";
+        display: inline-block; /* Flex yerine inline-block kullanıyoruz */
+        background-color: var(--d-blurple);
+        color: white;
+        font-size: 0.65em;
+        padding: 2px 6px;
+        border-radius: 3px;
+        margin-left: 6px;
+        vertical-align: 2px; /* Etiketi hafif yukarı hizalar */
+        line-height: 1.2;
+      }
+    }
+
+    /* Tarih */
+    em {
+      color: var(--d-text-muted);
+      font-size: 0.75em;
+      font-style: normal; 
+      margin-left: 4px;
+    }
+
+    /* SATIR İÇİ KODLAR (Siyah kutu sorununun çözümü) */
+    code {
+      background-color: var(--d-bg-darker);
+      color: var(--d-text);
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-size: 0.95em;
+      display: inline; /* Güvenlik için inline zorluyoruz */
+    }
+
+    /* Alt Metin (Only you can see this) */
+    p:last-of-type em {
+      display: block;
+      margin-top: 4px;
+      font-size: 0.75em;
+      color: var(--d-text-muted);
+      margin-left: 0; 
+    }
+  }
+}
