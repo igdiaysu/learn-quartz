@@ -1,7 +1,8 @@
-==TWITCH==
-
+---
+draft: true
+---
 # Getting Started
-
+==TWITCH==
 ## Invite to Your Twitch Channel
 
 Invite the bot to your channel by writing the command in [Senchabot](https://twitch.tv/senchabot/)'s chat.

@@ -1,4 +1,7 @@
-
+---
+tags: anasayfa
+---
+# hello 
 [[Getting Started]]
 
 > [!discord-cmd] /set-twitch streamer
